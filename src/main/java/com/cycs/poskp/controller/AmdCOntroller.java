@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("amd")
 public class AmdCOntroller {
 	
-	@Value("amd.key")
+	@Value("${amd.key}")
 	private String key;
 
 	@PostMapping("selectInfoByPosId")
