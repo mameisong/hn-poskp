@@ -140,11 +140,11 @@
 			<artifactId>druid-spring-boot-starter</artifactId>
 			<version>${druid-spring-boot-starter.version}</version>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.cycs.common</groupId>
 			<artifactId>cycs-redis</artifactId>
 			<version>1.0-SNAPSHOT</version>
-		</dependency>
+		</dependency> -->
 		<!-- ojdbc8 -->
 		<dependency>
 			<groupId>com.github.noraui</groupId>
@@ -163,10 +163,10 @@
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
 	</dependencies>
-	<!-- <build>
+	<build>
 		<finalName>hn-poskp-server</finalName>
 		<plugins>
-			打jar包
+			<!-- 打jar包 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -182,20 +182,20 @@
 					</excludes>
 					<archive>
 						<manifest>
-							指定Springboot程序启动类
+							<!-- 指定Springboot程序启动类 -->
 							<mainClass>com.cycs.poskp.PosKpApplication</mainClass>
 							<addClasspath>true</addClasspath>
-							指定依赖的jar包相对于本程序lib的位置
+							<!-- 指定依赖的jar包相对于本程序lib的位置 -->
 							<classpathPrefix>lib/</classpathPrefix>
 						</manifest>
 						<manifestEntries>
-							MANIFEST.MF 中 Class-Path 加入资源文件目录
+							<!-- MANIFEST.MF 中 Class-Path 加入资源文件目录 -->
 							<Class-Path>./resources/${project.build.finalName}/</Class-Path>
 						</manifestEntries>
 					</archive>
 				</configuration>
 			</plugin>
-			该插件的作用是用于复制依赖的jar包到指定的文件夹里
+			<!-- 该插件的作用是用于复制依赖的jar包到指定的文件夹里 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -217,7 +217,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			拷贝资源文件
+			<!-- 拷贝资源文件 -->
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
 				<executions>
@@ -239,5 +239,5 @@
 				</executions>
 			</plugin>
 		</plugins>
-	</build> -->
+	</build>
 </project>
