@@ -18,8 +18,8 @@ public class AmdCOntroller {
 	
 	@Value("amd.key")
 	private String key;
+
 	@PostMapping("selectInfoByPosId")
-	
 	public Object selectInfoByPosId() {
 		Map<String, String> map = new HashMap<String, String>(); 
 		map.put("posId", key);
