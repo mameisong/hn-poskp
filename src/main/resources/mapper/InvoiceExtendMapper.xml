@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cycs.poskp.dao.InvoiceExtendMapper">
+  <resultMap id="BaseResultMap" type="com.cycs.poskp.entity.InvoiceExtend">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="INVOICE_ID" jdbcType="VARCHAR" property="invoiceId" />
+    <result column="SERIAL_NUMBER" jdbcType="VARCHAR" property="serialNumber" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="MODIFY_TIME" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="VALID" jdbcType="CHAR" property="valid" />
+  </resultMap>
+  
+  <resultMap id="inProcessingMap" type="com.cycs.poskp.beans.InvoiceExtendBean">
+    <result column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="INVOICE_ID" jdbcType="VARCHAR" property="invoiceId" />
+    <result column="ENTERPRISE_ID" jdbcType="VARCHAR" property="enterpriseId" />
+    <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+  </resultMap>
+  <resultMap id="getListMap" type="com.cycs.poskp.entity.InvoiceExtend">
+    <result column="SERIAL_NUMBER" jdbcType="VARCHAR" property="serialNumber" />
+    <result column="STATUS" jdbcType="NUMERIC" property="status" />
+    <result column="ERROR_MESSAGE" jdbcType="VARCHAR" property="errorMessage" />
+    <result column="DOWNLOAD_URL" jdbcType="VARCHAR" property="downloadUrl" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, INVOICE_ID, SERIAL_NUMBER, CREATE_TIME, MODIFY_TIME, VALID
+  </sql>
+  
+  <select id="getList" parameterType="com.cycs.poskp.beans.InvoiceExtendBean" resultMap="getListMap">
+    select 
+    SERIAL_NUMBER,ERROR_MESSAGE,DOWNLOAD_URL,STATUS
+    from INVOICE_EXTEND
+   <where>
+	    <if test="serialNumbers != null">
+	       AND SERIAL_NUMBER in
+	       <foreach collection="serialNumbers" index="index" item="item" open="(" separator="," close=")">
+	             #{item}       
+	       </foreach> 
+	    </if>
+	    <if test="posId != null">
+		   AND POS_ID = #{posId,jdbcType=VARCHAR}
+	    </if>
+    </where>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="com.cycs.poskp.entity.InvoiceExtend" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from INVOICE_EXTEND
+   <where>
+	    <if test="serialNumber != null">
+	       AND SERIAL_NUMBER = #{serialNumber,jdbcType=VARCHAR}
+	    </if>
+	    <if test="id != null">
+		   AND ID = #{id,jdbcType=VARCHAR}
+	    </if>
+    </where>
+  </select>
+  <select id="selectInProcessing" parameterType="com.cycs.poskp.entity.InvoiceExtend" resultMap="inProcessingMap">
+    select ie.ID,ie.INVOICE_ID,ee.USER_ID,ee.ENTERPRISE_ID from 
+    INVOICE_EXTEND ie join 
+    ENTERPRISE_EXTEND ee on ee.POS_ID = ie.POS_ID
+    and ie.STATUS = 0
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from INVOICE_EXTEND
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cycs.poskp.entity.InvoiceExtend">
+    insert into INVOICE_EXTEND (ID, INVOICE_ID, SERIAL_NUMBER, 
+      CREATE_TIME, MODIFY_TIME, VALID,STATUS,POS_ID
+      )
+    values (#{id,jdbcType=VARCHAR}, #{invoiceId,jdbcType=VARCHAR}, #{serialNumber,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{valid,jdbcType=CHAR},
+      #{status,jdbcType=VARCHAR}, #{posId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cycs.poskp.entity.InvoiceExtend">
+    insert into INVOICE_EXTEND
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="invoiceId != null">
+        INVOICE_ID,
+      </if>
+      <if test="serialNumber != null">
+        SERIAL_NUMBER,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="modifyTime != null">
+        MODIFY_TIME,
+      </if>
+      <if test="valid != null">
+        VALID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceId != null">
+        #{invoiceId,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNumber != null">
+        #{serialNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="valid != null">
+        #{valid,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cycs.poskp.entity.InvoiceExtend">
+    update INVOICE_EXTEND
+    <set>
+      <if test="invoiceId != null">
+        INVOICE_ID = #{invoiceId,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNumber != null">
+        SERIAL_NUMBER = #{serialNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        MODIFY_TIME = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="valid != null">
+        VALID = #{valid,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=NUMERIC},
+      </if>
+      <if test="errorMessage != null">
+        ERROR_MESSAGE = #{errorMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadUrl != null">
+        DOWNLOAD_URL = #{downloadUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <where>
+	    <if test="serialNumber != null">
+	       AND SERIAL_NUMBER = #{serialNumber,jdbcType=VARCHAR}
+	     </if>
+	    <if test="id != null">
+		   AND ID = #{id,jdbcType=VARCHAR}
+	    </if>
+    </where> 
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cycs.poskp.entity.InvoiceExtend">
+    update INVOICE_EXTEND
+    set INVOICE_ID = #{invoiceId,jdbcType=VARCHAR},
+      SERIAL_NUMBER = #{serialNumber,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      MODIFY_TIME = #{modifyTime,jdbcType=TIMESTAMP},
+      VALID = #{valid,jdbcType=CHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

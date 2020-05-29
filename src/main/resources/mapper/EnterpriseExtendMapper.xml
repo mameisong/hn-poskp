@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cycs.poskp.dao.EnterpriseExtendMapper">
+  <resultMap id="BaseResultMap" type="com.cycs.poskp.entity.EnterpriseExtend">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="ENTERPRISE_ID" jdbcType="VARCHAR" property="enterpriseId" />
+    <result column="SKR" jdbcType="VARCHAR" property="skr" />
+    <result column="FHR" jdbcType="VARCHAR" property="fhr" />
+    <result column="XSF_DZ" jdbcType="VARCHAR" property="xsfDz" />
+    <result column="XSF_DH" jdbcType="VARCHAR" property="xsfDh" />
+    <result column="XSF_YHZH" jdbcType="VARCHAR" property="xsfYhzh" />
+    <result column="ID_CODE" jdbcType="VARCHAR" property="idCode" />
+    <result column="POS_ID" jdbcType="VARCHAR" property="posId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="MODIFY_TIME" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="VALID" jdbcType="CHAR" property="valid" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+    <result column="KPR" jdbcType="VARCHAR" property="kpr" />
+    <result column="ENTERPRISE_NAME" jdbcType="VARCHAR" property="enterpriseName" />
+    <result column="TAXPAYER_NUM" jdbcType="VARCHAR" property="taxpayerNum" />
+    <result column="XSF_YH" jdbcType="VARCHAR" property="xsfYh" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, ENTERPRISE_ID, SKR, FHR, XSF_DZ, XSF_DH, XSF_YHZH, ID_CODE, POS_ID, CREATE_TIME, 
+    MODIFY_TIME, VALID, USER_NAME, PASSWORD, USER_ID, KPR, ENTERPRISE_NAME, TAXPAYER_NUM, 
+    XSF_YH
+  </sql>
+   <sql id="whereCondition">
+      <if test="enterpriseId != null">
+        AND ENTERPRISE_ID = #{enterpriseId,jdbcType=VARCHAR}
+      </if>
+      <if test="posId != null">
+        AND POS_ID = #{posId,jdbcType=VARCHAR}
+      </if>
+      <if test="kpr != null">
+        AND KPR = #{kpr,jdbcType=VARCHAR}
+      </if>
+      <if test="id != null">
+        AND ID = #{id,jdbcType=VARCHAR}
+      </if>
+      <if test="taxpayerNum != null">
+        AND TAXPAYER_NUM = #{taxpayerNum,jdbcType=VARCHAR}
+      </if>
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ENTERPRISE_EXTEND
+    <where>
+	    <include refid="whereCondition" />
+    </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ENTERPRISE_EXTEND
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cycs.poskp.entity.EnterpriseExtend">
+    insert into ENTERPRISE_EXTEND (ID, ENTERPRISE_ID, SKR, 
+      FHR, XSF_DZ, XSF_DH, 
+      XSF_YHZH, ID_CODE, POS_ID, 
+      CREATE_TIME, MODIFY_TIME, VALID, 
+      USER_NAME, PASSWORD, USER_ID, 
+      KPR, ENTERPRISE_NAME, TAXPAYER_NUM, 
+      XSF_YH)
+    values (#{id,jdbcType=VARCHAR}, #{enterpriseId,jdbcType=VARCHAR}, #{skr,jdbcType=VARCHAR}, 
+      #{fhr,jdbcType=VARCHAR}, #{xsfDz,jdbcType=VARCHAR}, #{xsfDh,jdbcType=VARCHAR}, 
+      #{xsfYhzh,jdbcType=VARCHAR}, #{idCode,jdbcType=VARCHAR}, #{posId,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{valid,jdbcType=CHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
+      #{kpr,jdbcType=VARCHAR}, #{enterpriseName,jdbcType=VARCHAR}, #{taxpayerNum,jdbcType=VARCHAR}, 
+      #{xsfYh,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cycs.poskp.entity.EnterpriseExtend">
+    insert into ENTERPRISE_EXTEND
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="enterpriseId != null">
+        ENTERPRISE_ID,
+      </if>
+      <if test="skr != null">
+        SKR,
+      </if>
+      <if test="fhr != null">
+        FHR,
+      </if>
+      <if test="xsfDz != null">
+        XSF_DZ,
+      </if>
+      <if test="xsfDh != null">
+        XSF_DH,
+      </if>
+      <if test="xsfYhzh != null">
+        XSF_YHZH,
+      </if>
+      <if test="idCode != null">
+        ID_CODE,
+      </if>
+      <if test="posId != null">
+        POS_ID,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="modifyTime != null">
+        MODIFY_TIME,
+      </if>
+      <if test="valid != null">
+        VALID,
+      </if>
+      <if test="userName != null">
+        USER_NAME,
+      </if>
+      <if test="password != null">
+        PASSWORD,
+      </if>
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="kpr != null">
+        KPR,
+      </if>
+      <if test="enterpriseName != null">
+        ENTERPRISE_NAME,
+      </if>
+      <if test="taxpayerNum != null">
+        TAXPAYER_NUM,
+      </if>
+      <if test="xsfYh != null">
+        XSF_YH,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="enterpriseId != null">
+        #{enterpriseId,jdbcType=VARCHAR},
+      </if>
+      <if test="skr != null">
+        #{skr,jdbcType=VARCHAR},
+      </if>
+      <if test="fhr != null">
+        #{fhr,jdbcType=VARCHAR},
+      </if>
+      <if test="xsfDz != null">
+        #{xsfDz,jdbcType=VARCHAR},
+      </if>
+      <if test="xsfDh != null">
+        #{xsfDh,jdbcType=VARCHAR},
+      </if>
+      <if test="xsfYhzh != null">
+        #{xsfYhzh,jdbcType=VARCHAR},
+      </if>
+      <if test="idCode != null">
+        #{idCode,jdbcType=VARCHAR},
+      </if>
+      <if test="posId != null">
+        #{posId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="valid != null">
+        #{valid,jdbcType=CHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="kpr != null">
+        #{kpr,jdbcType=VARCHAR},
+      </if>
+      <if test="enterpriseName != null">
+        #{enterpriseName,jdbcType=VARCHAR},
+      </if>
+      <if test="taxpayerNum != null">
+        #{taxpayerNum,jdbcType=VARCHAR},
+      </if>
+      <if test="xsfYh != null">
+        #{xsfYh,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cycs.poskp.entity.EnterpriseExtend">
+    update ENTERPRISE_EXTEND
+    <set>
+      <if test="enterpriseId != null">
+        ENTERPRISE_ID = #{enterpriseId,jdbcType=VARCHAR},
+      </if>
+      <if test="skr != null">
+        SKR = #{skr,jdbcType=VARCHAR},
+      </if>
+      <if test="fhr != null">
+        FHR = #{fhr,jdbcType=VARCHAR},
+      </if>
+      <if test="xsfDz != null">
+        XSF_DZ = #{xsfDz,jdbcType=VARCHAR},
+      </if>
+      <if test="xsfDh != null">
+        XSF_DH = #{xsfDh,jdbcType=VARCHAR},
+      </if>
+      <if test="xsfYhzh != null">
+        XSF_YHZH = #{xsfYhzh,jdbcType=VARCHAR},
+      </if>
+      <if test="idCode != null">
+        ID_CODE = #{idCode,jdbcType=VARCHAR},
+      </if>
+      <if test="posId != null">
+        POS_ID = #{posId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        MODIFY_TIME = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="valid != null">
+        VALID = #{valid,jdbcType=CHAR},
+      </if>
+      <if test="userName != null">
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        PASSWORD = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        USER_ID = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="kpr != null">
+        KPR = #{kpr,jdbcType=VARCHAR},
+      </if>
+      <if test="enterpriseName != null">
+        ENTERPRISE_NAME = #{enterpriseName,jdbcType=VARCHAR},
+      </if>
+      <if test="taxpayerNum != null">
+        TAXPAYER_NUM = #{taxpayerNum,jdbcType=VARCHAR},
+      </if>
+      <if test="xsfYh != null">
+        XSF_YH = #{xsfYh,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cycs.poskp.entity.EnterpriseExtend">
+    update ENTERPRISE_EXTEND
+    set ENTERPRISE_ID = #{enterpriseId,jdbcType=VARCHAR},
+      SKR = #{skr,jdbcType=VARCHAR},
+      FHR = #{fhr,jdbcType=VARCHAR},
+      XSF_DZ = #{xsfDz,jdbcType=VARCHAR},
+      XSF_DH = #{xsfDh,jdbcType=VARCHAR},
+      XSF_YHZH = #{xsfYhzh,jdbcType=VARCHAR},
+      ID_CODE = #{idCode,jdbcType=VARCHAR},
+      POS_ID = #{posId,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      MODIFY_TIME = #{modifyTime,jdbcType=TIMESTAMP},
+      VALID = #{valid,jdbcType=CHAR},
+      USER_NAME = #{userName,jdbcType=VARCHAR},
+      PASSWORD = #{password,jdbcType=VARCHAR},
+      USER_ID = #{userId,jdbcType=VARCHAR},
+      KPR = #{kpr,jdbcType=VARCHAR},
+      ENTERPRISE_NAME = #{enterpriseName,jdbcType=VARCHAR},
+      TAXPAYER_NUM = #{taxpayerNum,jdbcType=VARCHAR},
+      XSF_YH = #{xsfYh,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

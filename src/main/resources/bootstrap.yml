@@ -1,0 +1,148 @@
+server:
+  port: 20030
+  servlet:
+    context-path: /pos-kp
+spring:
+  application:
+    name: pos-kp-server
+#  cloud:
+#    config:
+#      uri: http://192.168.1.30:20001
+#      profile: it
+#      name: ${spring.application.name},service-common,redis
+#
+eureka:
+  instance:
+    #lease-renewal-interval-in-seconds: 10
+    #lease-expiration-duration-in-seconds: 30
+    metadataMap:
+      instanceId: ${spring.application.name}:${random.value}
+      management:
+        context-path: ${server.servlet.context-path:/}/actuator
+    prefer-ip-address: true
+    ip-address: ${spring.cloud.client.ip-address}
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+  client:
+    serviceUrl: #注册中心的注册地址
+      defaultZone: http://192.168.1.35:10001/eureka/
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*" 
+#熔断机制hystrix dashboard仪表盘配置
+feign:
+  hystrix:
+    enabled: true      
+---
+spring:
+  datasource:
+    name: oracle_dev
+    type: com.alibaba.druid.pool.DruidDataSource
+    #druid相关配置
+    druid:
+      #监控统计拦截的filters
+      filters: stat
+      driver-class-name: oracle.jdbc.OracleDriver
+      #基本属性
+      url: jdbc:oracle:thin:@192.168.1.59:1521/cycs
+      username: poshn
+      password: tianchang123
+      #配置初始化大小/最小/最大
+      initial-size: 5
+      min-idle: 10
+      max-active: 20
+      #获取连接等待超时时间
+      max-wait: 60000
+      #间隔多久进行一次检测，检测需要关闭的空闲连接
+      time-between-eviction-runs-millis: 60000
+      
+      #一个连接在池中最小生存的时间
+      min-evictable-idle-time-millis: 300000
+      validation-query: select 1 from dual
+      test-while-idle: true
+      test-on-borrow: true
+      test-on-return: false
+      remove-abandoned: true
+      remove-abandoned-timeout: 180
+      log-abandoned: true
+      keep-alive: true
+      #打开PSCache，并指定每个连接上PSCache的大小。oracle设为true，mysql设为false。分库分表较多推荐设置为false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+mybatis:
+  type-aliases-package: com.cycs.poskp.entity
+  mapper-locations: classpath:/mapper/*
+  configuration:
+    aggressive-lazy-loading: true
+    cache-enabled: true
+    multiple-result-sets-enabled: true
+    use-column-label: true
+    use-generated-keys: false
+    default-executor-type: BATCH
+    default-statement-timeout: 100
+    safe-row-bounds-enabled: false
+    map-underscore-to-camel-case: false
+    local-cache-scope: SESSION
+    jdbc-type-for-null: OTHER
+    lazy-load-trigger-methods: equals,clone,hashcode,tostring
+ # 分页配置
+pagehelper:
+  helper-dialect: oracle
+  #这是pageHelper里面自带的一个功能，叫做reasonable分页参数合理化，3.3.0以上版本可用，默认是false。 启用合理化时，如果pageNum<1会查询第一页，如果pageNum>pages会查询最后一页； 禁用合理化时，如果pageNum<1或pageNum>pages会返回空数据
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+#日志配置  
+cycs:
+  logger:
+    root: INFO
+    level: DEBUG
+    sql:
+      level: DEBUG
+area-code: "0731"
+#okhttp配置
+http: 
+  ok-http:
+    max-idle-connections: 100
+    keep-alive-duration: 300 #秒
+    connect-timeout: 20000 #毫秒
+    read-timeout: 20000 #毫秒
+    write-timeout: 20000 #毫秒
+    call-timeout: 20000 #毫秒     
+  url:
+    #请求内网开票地址
+    dkurl: https://fp.ce12366.com:23002/delegate/%s
+    query-invoice: https://fp.ce12366.com:7979/EINVO/invoiceInfoController/queryInvoiceForSwdk.do
+    download: https://fp.ce12366.com:20007/einvoice/download/api
+    amd-api: http://wxceshi.umsamd.com/Amaidan-Center-Web/api/%s
+#虚拟用户设置
+user:
+  userName: testPos
+  password: E99A18C428CB38D5F260853678922E03
+amd:
+  key: 8758BB1D9C7500AF4D353C0D1D2F13F6
+---
+spring: 
+  redis:
+    password: tianchang.redis   
+    host: 192.168.1.7
+    port: 6379
+    database: 5
+    jedis:
+      pool:
+        #控制一个pool最多有多少个状态为idle(空闲的)的jedis实例
+        max-idle: 50
+        min-idle: 0
+        ##可用连接实例的最大数目
+        ##不设定时，默认值为8
+        ##如果赋值为-1，则表示不限制；如果pool已经分配了maxActive个jedis实例，则此时pool的状态为exhausted
+        max-active: 100
+        #表示当borrow(引入)一个jedis实例时，最大的等待时间，单位毫秒，默认值为-1，表示永不超时。
+        max-wait: -1
+task:
+  cron:
+    grab: "*/30 * * * * ?"

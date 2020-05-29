@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<springProperty scope="context" name="APP_NAME" source="spring.application.name"/>
+	<springProperty scope="context" name="KAFKA_SERVER" source="spring.kafka.bootstrap-servers"/>
+	<springProperty scope="context" name="LOGGER_LEVEL" source="cycs.logger.level"/>
+	<springProperty scope="context" name="ROOT_LEVEL" source="cycs.logger.root"/>
+	<springProperty scope="context" name="SQL_LEVEL" source="cycs.logger.sql.level"/>
+	<!--对日志进行格式化-->
+	<property name="LOG_MSG" value="%d{yyyy-MM-dd HH:mm:ss} | %-5level | %msg | %C{15}#%M | [%-1thread]"/>
+
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%white(%d{yyyy-MM-dd HH:mm:ss}) | %highlight(%-5level) | %cyan(%msg) | %boldMagenta(%C{15}#%M) | %green([%-1thread]) %n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>/var/opt/logs/cycs/${APP_NAME}.log</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>/var/opt/logs/cycs/${APP_NAME}.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+			<!-- 保存90天 -->
+		    <maxHistory>90</maxHistory>
+		    <!-- 总日志大小 -->
+		    <!-- <totalSizeCap>20GB</totalSizeCap>-->
+		    <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>300MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${LOG_MSG} %n</pattern>
+		</encoder>
+	</appender>
+
+
+	<!-- project default level -->
+	<logger name="com.cycs" level="${LOGGER_LEVEL}" />
+	<logger name="com.cycs.billing.dao" level="${SQL_LEVEL}" />
+	<!--springframework -->
+	<logger name="org.springframework" level="ERROR"/>
+	<logger name="io.netty" level="ERROR"/>
+	<logger name="org.apache.kafka" level="WARN"/>
+	<logger name="org.apache.http" level="WARN"/>
+	<logger name="com.netflix" level="WARN"/>
+	<logger name="org.hibernate.validator" level="WARN"/>
+	<logger name="org.synchronoss.cloud.nio.multipart" level="ERROR"/>
+	<logger name="io.lettuce" level="WARN"/>
+	<logger name="com.alibaba.druid" level="WARN"/>
+	<logger name="springfox.documentation" level="WARN"/>
+	<logger name="org.apache.juli" level="WARN"/>
+	<logger name="org.mybatis.spring" level="WARN"/>
+	<logger name="org.apache.ibatis" level="WARN"/>
+	<logger name="org.apache.ibatis.logging.jdbc" level="${SQL_LEVEL}"/>
+
+	<root level="DEBUG">
+		<appender-ref ref="console" />
+		<appender-ref ref="rollingFile" />
+		<!-- <appender-ref ref="kafkaAppender" /> -->
+		<!--<appender-ref ref="mqAppender" />-->
+	</root>
+</configuration>
