@@ -13,7 +13,7 @@
 		<druid-spring-boot-starter.version>1.1.10</druid-spring-boot-starter.version>
 		<pagehelper-spring-boot-starter.version>1.2.5</pagehelper-spring-boot-starter.version>
 		<guava.version>26.0-jre</guava.version>
-		<fastjson.version>1.2.54</fastjson.version>
+		<fastjson.version>1.2.83</fastjson.version>
 		<ojdbc.version>12.2.0.1</ojdbc.version>
 		<protostuff.version>1.0.7</protostuff.version>
 		<jwt.version>3.2.0</jwt.version>
